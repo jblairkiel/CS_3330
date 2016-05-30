@@ -1,8 +1,8 @@
 /**
  *	g.cpp - This progam implements the g() gunction 
  *         as described in the handout.
- *          *
- *           * TODO: Include your name and course number here
+ *
+ *           Blair Kiel	- CS 33330 XTIA 16/T5
  *            
  */
 
@@ -33,9 +33,13 @@ int main(int argc, char **argv)
 
 int g(int n)
 {
-   // TODO: Implement the details of the recursive g()
-   //    // function here based on the math definition in
-   //       // handout
-   //
-   return 0;
+	if(n > 0){
+		return ( g(n-1) + ((3*n) -1) );
+	}
+	else if(n < 0){
+		return ( g(-n-1) - (3*n) -1 );
+	}
+	else{
+   		return 0;
+	}
 }
