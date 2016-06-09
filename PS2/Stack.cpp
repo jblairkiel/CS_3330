@@ -4,6 +4,8 @@
  *             reverse a given stack.
  *
  * TODO: Include your name and course number here.
+ * 	Blair Kiel	
+ * 	CS 3330XTIA / T5
  */
 
 #include <iostream>
@@ -70,7 +72,19 @@ void reverseStack(stack<Object> &myStack)
 {
    // TODO: Implement the details for the reverseStack 
    // function.
+  
 
+   stack<string> tempStack;
+   string tempString = "";
+
+   while(!myStack.empty()){
+
+      tempString = myStack.top();
+      myStack.pop();
+      tempStack.push(tempString);
+   }
+
+   myStack = tempStack;
    return;
 }
 

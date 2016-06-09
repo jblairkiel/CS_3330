@@ -4,6 +4,8 @@
  *            if a given element is in a given list.
  *
  * TODO: Include your name and course number here.
+ * 	Blair Kiel
+ * 	CS 3330XTIA / T5
  */
 
 #include <iostream>
@@ -78,6 +80,16 @@ bool isInList(Object element, list<Object> myList)
    // as done in the printList() method. If value 
    // equals element then return true or set the found 
    // vairable equal to true and break out of the loop.
+
+   typename list<Object>::iterator node;
+   for (node = myList.begin(); node != myList.end(); ++node)
+   {
+	Object value = (*node);
+
+	if(value == element){
+	   found = true;
+        }
+   }	
 
    return found;
 }
