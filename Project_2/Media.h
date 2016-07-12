@@ -52,6 +52,8 @@ class Media{
 		char getRandomChar();
 		char getRandomNum();
 
+		string asString();
+
 };
 
 #endif

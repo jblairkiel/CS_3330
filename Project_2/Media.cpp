@@ -5,6 +5,7 @@
 /** @brief Constructor for Data type of Media streamer
  * 
  */
+using namespace std;
 
 	const char alpha[] = "ABCDE""FGHIJ""KLM""NOPQRST""UVWXYZ";
 	const char num[] = "012""3456""789";
@@ -190,5 +191,30 @@ char Media::getRandomChar(){
 char Media::getRandomNum(){
 
 	return num[rand() % numLen];	
+}
+
+/** @brief The string representation of the Media Entry
+ *
+ */
+string Media::asString(){
+
+	float rentPrice;
+	string ret = "";
+	ret += getEntryID();
+	ret += ",";
+	ret += getProductType();
+	ret += ",";
+	ret += getDescription();
+	ret += ",";
+	ret += getDurationTime();
+	ret += ",";
+	rentPrice = getRentalPrice();
+	ret += to_string(rentPrice);
+	ret += ",";
+	ret += getDateAvailable();
+	ret += ",";
+	ret += getDaysAvailable();
+	ret += ";";
+	return ret;
 }
 	
