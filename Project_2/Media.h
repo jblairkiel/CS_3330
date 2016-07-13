@@ -24,7 +24,8 @@ class Media{
 
 		//GETTERS and SETTERS
 		string getEntryID();
-		void setEntryID();
+		void setEntryID(string sID);
+		void generateEntryID();
 
 		string getProductType();
 		void setProductType(string sType);

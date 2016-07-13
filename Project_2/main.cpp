@@ -24,30 +24,111 @@ void saveFile(string fileName, list<Media> mList){
 	for (it = mList.begin(); it != mList.end(); it++){
 	
 		Media item = (*it);
-		oFile << item.asString() + '\n';
+		oFile << item.asString();
 	}
 	oFile.close();
 	return;
 
 }
 
-void readInFile(string fileName, list<Media> mList){
+list<Media> readInFile(string fileName, list<Media> mList){
 
 	string line;
-	ifstream inFile (fileName);
-	cout << "READING IN FILE\n\n";
-	if (inFile.is_open()){
+	int pCount = 0;
+	double tempDub;
+	float tempFloat;
+	Media newItem = Media();
+
+	ifstream inFile; 
+	inFile.open("media_list.dat");
 	
-		while(getline(inFile, line)){
-			cout << line + '\n';
+	if(inFile.is_open()){
+		while(getline(inFile,line)){
+
+			int point = 0;
+			string str;
+			
+			while(line[point] != ','){
+				str += line[point];
+				point++;
+			}
+
+			Media newItem = Media();
+			newItem.setEntryID(str);
+			str = "";
+			point++;
+
+			while (line[point] != ','){
+				str += line[point];
+				point++;
+			}
+//			cout << str + '\n';
+
+			point++;
+			newItem.setProductType(str);
+			str = "";
+
+			while (line[point] != ','){
+				str += line[point];
+				point++;
+			}
+
+			newItem.setTitle(str);
+			str = "";
+			point++;
+
+			while (line[point] != ','){
+				str += line[point];
+				point++;
+			}
+
+			newItem.setDescription(str);
+			str = "";
+			point++;
+
+			while (line[point] != ','){
+				str += line[point];
+				point++;
+			}
+
+			newItem.setDurationTime(str);	
+			str = "";
+			point++;
+
+			while (line[point] != ','){
+				str += line[point];
+				point++;
+			}
+
+			tempDub = atof(str.c_str());
+			tempFloat = (float) tempDub;	
+			newItem.setRentalPrice(tempFloat);
+			str = "";
+			point++;
+
+			while (line[point] != ','){
+				str += line[point];
+				point++;
+			}
+
+			newItem.setDateAvailable(str);
+			str = "";
+			point++;
+
+			while(line[point] != ';'){
+				str += line[point];
+				point++;
+			}
+			newItem.setDaysAvailable(str);	
+			cout << newItem.asString();
+			mList.push_front(newItem);
+			str = "";
+			line = "";
+			
 		}
 		inFile.close();
 	}
-	else{
-		cout << "Unable to open file";
-	}
-
-	return;
+	return mList;
 }
 
 int main(int argc, char* argv[]){
@@ -58,7 +139,7 @@ int main(int argc, char* argv[]){
 	list<Media> mediaManager;
 
 	//Read in file
-	readInFile(programFile);
+	mediaManager = readInFile(programFile, mediaManager);
 
 
 	bool sFlag = true;
@@ -99,7 +180,7 @@ int main(int argc, char* argv[]){
 			float tempFloat;
 
 			Media newItem = Media();
-			newItem.setEntryID();
+			newItem.generateEntryID();
 			
 			cout << "\nProduct Type: ";
 			getline(cin, temp);

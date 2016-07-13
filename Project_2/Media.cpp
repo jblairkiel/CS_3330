@@ -15,7 +15,7 @@ using namespace std;
 Media::Media(){
 
 	//Initialize all fields
-	setEntryID();
+	setEntryID("");
 	setProductType("");
 	setTitle("");
 	setDescription("");
@@ -34,10 +34,15 @@ string Media::getEntryID(){
 	return entryID;
 }
 
+void Media::setEntryID(string sID){
+	entryID = sID;
+	return;		
+}
+
 /** @brief SETTER of ENTRYID
  *
  */
-void Media::setEntryID(){
+void Media::generateEntryID(){
 
 	entryID = "";
 
@@ -62,6 +67,7 @@ void Media::setEntryID(){
 	}	
 	return;
 }
+
 
 /** @brief GETTER for PRODUCTTYPE
  *
