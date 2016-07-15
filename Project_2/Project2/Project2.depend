@@ -1,0 +1,18 @@
+# depslib dependency file v1.0
+1468545489 source:f:\documents\programming\cygwin\home\james\cs_3330\project_2\main.cpp
+	<cstdlib>
+	<string>
+	<iostream>
+	<fstream>
+	<ctime>
+	<list>
+	"Media.h"
+
+1468368072 f:\documents\programming\cygwin\home\james\cs_3330\project_2\media.h
+	<string>
+
+1468544443 source:f:\documents\programming\cygwin\home\james\cs_3330\project_2\media.cpp
+	"Media.h"
+	<ctime>
+	<cstdlib>
+

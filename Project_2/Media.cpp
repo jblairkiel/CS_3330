@@ -15,6 +15,7 @@ using namespace std;
 Media::Media(){
 
 	//Initialize all fields
+	/**
 	setEntryID("");
 	setProductType("");
 	setTitle("");
@@ -23,6 +24,7 @@ Media::Media(){
 	setRentalPrice(0);
 	setDateAvailable("");
 	setDaysAvailable("");	
+	*/
 
 }
 
@@ -52,14 +54,14 @@ void Media::generateEntryID(){
 	}	
 
 
-	entryID += "-";
+	entryID.append("-");
 
 	//SECOND 3 NUMS
 	for (int i = 0; i < 3; ++i){
 		entryID += getRandomNum();
 	}
 
-	entryID += "-";
+	entryID.append("-");
 
 	//LAST 2 NUMS
 	for (int i = 0; i< 2; ++i){
@@ -199,6 +201,7 @@ char Media::getRandomNum(){
 	return num[rand() % numLen];	
 }
 
+
 /** @brief The string representation of the Media Entry
  *
  */
@@ -206,21 +209,24 @@ string Media::asString(){
 
 	float rentPrice;
 	string ret = "";
-	ret += getEntryID();
-	ret += ",";
-	ret += getProductType();
-	ret += ",";
-	ret += getDescription();
-	ret += ",";
-	ret += getDurationTime();
-	ret += ",";
+	ret.append(getEntryID());
+	ret.append(",");
+	ret.append(getProductType());
+	ret.append(",");
+	ret.append(getTitle());
+	ret.append(",");
+	ret.append(getDescription());
+	ret.append(",");
+	ret.append(getDurationTime());
+	ret.append(",");
 	rentPrice = getRentalPrice();
-	ret += to_string(rentPrice);
-	ret += ",";
-	ret += getDateAvailable();
-	ret += ",";
-	ret += getDaysAvailable();
-	ret += ";";
+	ret.append(to_string(rentPrice));
+	//ret.append(getRentalPrice());
+	ret.append(",");
+	ret.append(getDateAvailable());
+	ret.append(",");
+	ret.append(getDaysAvailable());
+	ret.append(";");
 	return ret;
 }
 	
