@@ -12,10 +12,116 @@ using namespace std;
 /** @brief The main function that runs the program.
  */
 
+//Check if a list contains an element
+bool listContains(list<string> pList, string sWord){
+	
+	list<string>::iterator it;
+	bool foundFlag = false;
+	for (it = pList.begin(); it != pList.end(); it++){
+
+		string item = (*it);
+		if(sWord.compare(item) == 0){
+			return true;
+		}
+	}
+	return false;
+}
+
+bool validDate(string iString){
+
+	int point = 0;
+	string month;
+	string day;
+	string year;
+
+	try{
+
+		//Check Month
+		for (point; point < 2; point++){
+			month += iString[point];
+		}
+
+		if( (12 < stoi(month)) || (0 > stoi(month))){
+			return false;
+		}
+		point++;
+
+		//Check Day
+		for (point; point < 5; point++){
+			day += iString[point];
+		}
+
+		if( (31 < stoi(day)) || (0 > stoi(day))){
+			return false;
+		}
+		point++;
+
+		//Check Year
+		for (point; point < 10; point++){
+			year+= iString[point];
+		}
+		if( (0 > stoi(year)) || (9999 < stoi(year))){
+			return false;
+		}
+
+		return true;
+
+	}
+	catch (exception& e){
+		return false;	
+	}
+}
+
+bool validTime(string iString){
+
+	int point = 0;
+	string hours;
+	string minutes;
+	string seconds;
+
+	try{
+
+		//Check Hours
+		for (point; point < 2; point++){
+			hours += iString[point];
+		}
+
+		if( (12 < stoi(hours)) || (0 > stoi(hours))){
+			return false;
+		}
+		point++;	
+
+		//Check Minutes	
+		for (point; point < 5; point++){
+			minutes += iString[point];
+		}
+
+		if( (60 < stoi(minutes)) || (0 > stoi(minutes))){
+			return false;
+		}
+		point++;
+
+		//Check Seconds
+		for (point; point < 8; point++){
+			seconds+= iString[point];
+		}
+
+		if( (60 < stoi(seconds)) || (0 > stoi(seconds))){
+			return false;
+		}
+
+		return true;
+
+	}
+	catch (exception& e){
+		return false;	
+	}
+}
+
 /** @brief Edits the entry item by the give entryID
  *
  */
-list<Media> editMediaEntry(string entryID, list<Media> mList){
+list<Media> editMediaEntry(string entryID, list<Media> mList, list<string> sList){
 
 	if(mList.size() != 0){
 		string temp;
@@ -30,42 +136,58 @@ list<Media> editMediaEntry(string entryID, list<Media> mList){
 				cout << item.asString() + "\n\n";
 
 				//Editing Fields
-				cout << "\nNew 'Product Type': ";
+				cout << "\nEdit 'Product Type' (movie, music, television, news or radio): ";
 				getline(cin, temp);
+				while(!listContains(sList, temp)){
+					cout << "\nEnter valid Product Type (movie, music, television, news or radio): ";
+					getline(cin, temp);
+				}
 				item.setProductType(temp);
 
-				cout << "\nNew 'Media Title': ";
+
+
+				cout << "\nEdit 'Media Title': ";
 				getline(cin, temp);
 				item.setTitle(temp);
 
-				cout << "\nNew 'Media Description': ";
+				cout << "\nEdit 'Media Description': ";
 				getline(cin, temp);
 				item.setDescription(temp);
 
-				cout << "\nNew 'Media Duration Time': ";
+				cout << "\nEdit 'Media Duration Time' (hh:mm:ss): ";
 				getline(cin, temp);
+				while(!validTime(temp)){
+					cout << "\nEnter valid Media Duration Time (hh:mm:ss): ";
+					getline(cin, temp);	
+				}
 				item.setDurationTime(temp);
 
-				cout << "\nNew 'Media Rental Price': ";
+				cout << "\nEdit 'Media Rental Price': ";
 				getline(cin, temp);
 				tempDub = atof(temp.c_str());
 				tempFloat = (float) tempDub;
 				item.setRentalPrice(tempFloat);
 
-				cout << "\nNew 'Media Date Available': ";
+				cout << "\nEdit 'Media Date Available': ";
 				getline(cin, temp);
+				while(!validDate(temp)){
+					cout << "\nEnter valid Media Date Available (mm:dd:yyyy): ";
+					getline(cin, temp);	
+				}
 				item.setDateAvailable(temp);
 
-				cout << "\nNew 'Media Days Available': ";
+				cout << "\nEdit 'Media Days Available': ";
 				getline(cin, temp);
 				item.setDaysAvailable(temp);
 
 				return mList;
 			}
 		}
+		cout << string(100, '\n');
 		cout << "No Media with EntryID:'" + entryID + "' exists in the List\n";
 	}
 	else{
+		cout << string(100, '\n');
 		cout << "The List is empty!\n";
 	}
 	return mList;
@@ -83,6 +205,7 @@ list<Media> deleteMediaEntry(string entryID, list<Media> mList){
 
 			Media item = (*it);
 			if(entryID.compare(item.getEntryID()) == 0){
+				cout << string(100, '\n');
 				cout << "Deleted Media Entry:\n";
 				cout << item.asString() + "\n";
 				foundFlag = true;
@@ -92,11 +215,13 @@ list<Media> deleteMediaEntry(string entryID, list<Media> mList){
 			}
 		}
 		if(!foundFlag){
+			cout << string(100, '\n');
 			cout << "No Media with EntryID:'" + entryID + "' exists in the List\n";
 		}
 		return tempManager;
 	}
 	else{
+		cout << string(100, '\n');
 		cout << "The List is empty!\n";
 	}
 	return mList;
@@ -111,21 +236,24 @@ void searchForMedia(string entryID, list<Media> mList){
 
 			Media item = (*it);
 			if(entryID.compare(item.getEntryID()) == 0){
+				cout << string(100, '\n');
 				cout << "Found Media Entry:\n";
 				cout << item.asString() + "\n";
 				return;
 			}
 		}
+		cout << string(100, '\n');
 		cout << "No Media with EntryID:'" + entryID + "' exists in the List\n";
 	}
 	else{
+		cout << string(100, '\n');
 		cout << "The List is empty!\n";
 	}
 	return;
 
 }
 
-list<Media> newMediaEntry(list<Media> mList){
+list<Media> newMediaEntry(list<Media> mList, list<string> sList){
 	string temp; 
 	double tempDub;
 	float tempFloat;
@@ -133,8 +261,12 @@ list<Media> newMediaEntry(list<Media> mList){
 	Media newItem = Media();
 	newItem.generateEntryID();
 
-	cout << "\nProduct Type: ";
+	cout << "\nProduct Type (movie, music, television, news or radio): ";
 	getline(cin, temp);
+	while(!listContains(sList, temp)){
+		cout << "\nEnter valid Product Type (movie, music, television, news or radio): ";
+		getline(cin, temp);
+	}
 	newItem.setProductType(temp);
 
 	cout << "\nMedia Title: ";
@@ -145,8 +277,12 @@ list<Media> newMediaEntry(list<Media> mList){
 	getline(cin, temp);
 	newItem.setDescription(temp);
 
-	cout << "\nMedia Duration Time: ";
+	cout << "\nMedia Duration Time (hh:mm:ss): ";
 	getline(cin, temp);
+	while(!validTime(temp)){
+		cout << "\nEnter valid Media Duration Time (hh:mm:ss): ";
+		getline(cin, temp);	
+	}
 	newItem.setDurationTime(temp);
 
 	cout << "\nMedia Rental Price: ";
@@ -155,8 +291,12 @@ list<Media> newMediaEntry(list<Media> mList){
 	tempFloat = (float) tempDub;
 	newItem.setRentalPrice(tempFloat);
 
-	cout << "\nMedia Date Available: ";
+	cout << "\nMedia Date Available (mm:dd:yyyy): ";
 	getline(cin, temp);
+	while(!validDate(temp)){
+		cout << "\nEnter valid Media Date Available (mm:dd:yyyy): ";
+		getline(cin, temp);	
+	}
 	newItem.setDateAvailable(temp);
 
 	cout << "\nMedia Days Available: ";
@@ -164,6 +304,7 @@ list<Media> newMediaEntry(list<Media> mList){
 	newItem.setDaysAvailable(temp);
 
 	mList.push_front(newItem);
+	cout << string(100, '\n');
 	return mList;
 }
 
@@ -287,10 +428,15 @@ list<Media> readInFile(string fileName, list<Media> mList){
 
 int main(int argc, char* argv[]){
 
-	//Initialize random time seed
+	//Initialize random time seed and other variables
 	srand(time(0));
 	string programFile = "test.dat";
+
 	list<Media> mediaManager;
+	//allows uppercase or lowercase
+	string productTypeArray[] = {"Movie", "movie", "Music", "music", "Television", "television", "News", "news", "Radio", "radio"};
+	list<string> productTypeList (productTypeArray, productTypeArray + sizeof(productTypeArray) / sizeof(string));
+		
 
 	//Read in file
 	mediaManager = readInFile(programFile, mediaManager);
@@ -299,9 +445,10 @@ int main(int argc, char* argv[]){
 	bool sFlag = true;
 	string entryID;
 	string uInput;
+	cout << string(100, '\n');
 	cout << "Blair Kiel's Media Streaming Service\n";
 	cout << "====================================\n";
-	cout << "                                    \n";
+	cout << "NOTE: AVOID USING COMMAS IN INPUT   \n";
 
 	//Main Program Loop
 	while(sFlag){
@@ -318,22 +465,33 @@ int main(int argc, char* argv[]){
 
 		//Display all available entries
 		if(uInput == "1"){
+			float rentalTotal = 0;
+			int mediaCount = 0;
+			cout << string(100, '\n');
+			cout << "Current Media Streaming Service Contents\n";
+			cout << "========================================\n\n";
+			cout << "EntryID | Product Type | Title | Description | Duration Time | Rental Price | Date Available | Days Available \n\n";
             		if (mediaManager.size() != 0){
                 		list<Media>::iterator it;
                 		for (it = mediaManager.begin(); it != mediaManager.end(); it++){
                     			Media item = (*it);
+					rentalTotal += item.getRentalPrice();
+					mediaCount++;
                     			cout << item.asString() + '\n';
                 		}
            		} 
             		else{
 				cout << "The List Is Empty!\n";
 		    	}
+			cout << "\nMedia Items in Streaming Service: " + to_string(mediaCount) + '\n';
+			cout << "Total Rental Cost: " + to_string(rentalTotal) + '\n';
+			cout << '\n';
 		}
 
 		//Create new entry
 		else if (uInput == "2"){
 
-			mediaManager = newMediaEntry(mediaManager);
+			mediaManager = newMediaEntry(mediaManager, productTypeList);
 		}
 
 		//Delete existing entry
@@ -355,7 +513,7 @@ int main(int argc, char* argv[]){
 		else if (uInput == "5"){
 			cout << "Entry ID to edit: ";
 			getline(cin, entryID);
-			mediaManager = editMediaEntry(entryID, mediaManager);
+			mediaManager = editMediaEntry(entryID, mediaManager, productTypeList);
 		}
 		
 		//Exit and Save Program
