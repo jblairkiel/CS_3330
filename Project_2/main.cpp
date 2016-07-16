@@ -64,6 +64,10 @@ bool validDate(string iString){
 			return false;
 		}
 
+		//Check length
+		if(iString.length() != 6){
+			return false;
+		}
 		return true;
 
 	}
@@ -109,6 +113,11 @@ bool validTime(string iString){
 		if( (60 < stoi(seconds)) || (0 > stoi(seconds))){
 			return false;
 		}
+	
+		//Check length
+		if(iString.length() != 8){
+			return false;
+		}
 
 		return true;
 
@@ -127,6 +136,8 @@ list<Media> editMediaEntry(string entryID, list<Media> mList, list<string> sList
 		string temp;
 		double tempDub;
 		float tempFloat;
+		bool foundFlag = false;
+		list<Media> tempList; 
 		list<Media>::iterator it;
 		for (it = mList.begin(); it != mList.end(); it++){
 
@@ -180,11 +191,21 @@ list<Media> editMediaEntry(string entryID, list<Media> mList, list<string> sList
 				getline(cin, temp);
 				item.setDaysAvailable(temp);
 
-				return mList;
+				foundFlag = true;
+				tempList.push_front(item);
+			}
+			else{
+				tempList.push_front(item);
 			}
 		}
-		cout << string(100, '\n');
-		cout << "No Media with EntryID:'" + entryID + "' exists in the List\n";
+		if(!foundFlag){
+			cout << string(100, '\n');
+			cout << "No Media with EntryID:'" + entryID + "' exists in the List\n";
+			return mList;
+		}
+		else{
+			return tempList;
+		}
 	}
 	else{
 		cout << string(100, '\n');
