@@ -148,6 +148,27 @@ float Media::getRentalPrice(){
 	return rentalPrice;
 }
 
+string Media::getRentalDollar(){
+
+	string tempPrice;
+	float fPrice = getRentalPrice();
+	string sPrice = to_string(fPrice);
+	int counter1 = 0;
+	tempPrice += '$';
+	while (true){
+		if(sPrice[counter1] == '.'){
+			tempPrice += '.';
+			counter1++;
+			for(int i = 0; i < 2; i++){
+				tempPrice += sPrice[counter1+i];
+			}	
+			return tempPrice;
+		}
+		tempPrice += sPrice[counter1];
+		counter1++;
+	}
+
+}
 /** @brief SETTER for rentalPrice
  *
  */
@@ -177,7 +198,7 @@ void Media::setDateAvailable(string sDate){
 /** @brief GETTER for DAYSAVAILABLE
  *
  */
-string Media::getDaysAvailable(){
+int Media::getDaysAvailable(){
 
 	return daysAvailable;
 }
@@ -187,9 +208,12 @@ string Media::getDaysAvailable(){
  */
 void Media::setDaysAvailable(string sDays){
 	
-	daysAvailable = sDays;
+	int sInt = stoi(sDays);
+	daysAvailable = sInt;
 	return;
 }
+
+/**HELPERS**/
 
 char Media::getRandomChar(){
 
@@ -208,6 +232,7 @@ char Media::getRandomNum(){
 string Media::asString(){
 
 	float rentPrice;
+	int sInt;
 	string ret = "";
 	ret.append(getEntryID());
 	ret.append(",");
@@ -225,8 +250,34 @@ string Media::asString(){
 	ret.append(",");
 	ret.append(getDateAvailable());
 	ret.append(",");
-	ret.append(getDaysAvailable());
+	sInt = getDaysAvailable();
+	ret.append(to_string(sInt));
 	ret.append(";");
 	return ret;
 }
 	
+string Media::printString(){
+
+	float rentPrice;
+	int sInt;
+	string ret = "";
+	ret.append(getEntryID());
+	ret.append(" | ");
+	ret.append(getProductType());
+	ret.append(" | ");
+	ret.append(getTitle());
+	ret.append(" | ");
+	ret.append(getDescription());
+	ret.append(" | ");
+	ret.append(getDurationTime());
+	ret.append(" | ");
+	ret.append(getRentalDollar());
+	//ret.append(getRentalPrice());
+	ret.append(" | ");
+	ret.append(getDateAvailable());
+	ret.append(" | ");
+	sInt = getDaysAvailable();
+	ret.append(to_string(sInt) + " Days");
+	return ret;
+
+}

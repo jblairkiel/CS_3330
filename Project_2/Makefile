@@ -15,4 +15,4 @@ clean:
 	rm -rf ./project2.dSYM
 
 run:    clean project2 
-	./project22.exe
+	./project22

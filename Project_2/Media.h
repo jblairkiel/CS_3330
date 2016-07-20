@@ -16,7 +16,7 @@ class Media{
 		string durationTime;
 		float rentalPrice;
 		string dateAvailable;
-		string daysAvailable;
+		int daysAvailable;
 
 	public:
 
@@ -40,12 +40,13 @@ class Media{
 		void setDurationTime(string sTime);
 		
 		float getRentalPrice();
+		string getRentalDollar();
 		void setRentalPrice(float fPrice);
 	
 		string getDateAvailable();
 		void setDateAvailable(string sDate);
 
-		string getDaysAvailable();
+		int getDaysAvailable();
 		void setDaysAvailable(string sDays);
 
 		//HELPERS
@@ -54,6 +55,7 @@ class Media{
 		char getRandomNum();
 
 		string asString();
+		string printString();
 
 };
 

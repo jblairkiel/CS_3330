@@ -12,6 +12,25 @@ using namespace std;
 /** @brief The main function that runs the program.
  */
 
+string toDollar(float fPrice){
+
+	string tempPrice;
+        string sPrice = to_string(fPrice);
+        int counter1 = 0;
+        tempPrice += '$';
+        while (true){
+                if(sPrice[counter1] == '.'){
+                        tempPrice += '.';
+                        counter1++;
+                        for(int i = 0; i < 2; i++){
+                                tempPrice += sPrice[counter1+i];
+                        }
+                        return tempPrice;
+                }
+                tempPrice += sPrice[counter1];
+                counter1++;
+        }
+}
 //Check if a list contains an element
 bool listContains(list<string> pList, string sWord){
 	
@@ -27,6 +46,67 @@ bool listContains(list<string> pList, string sWord){
 	return false;
 }
 
+/** @brief Verifies that a given ID is valid by not already being used
+*
+*/
+bool validID(string sID, list<Media> mList){
+
+	if(mList.size() != 0){
+		list<Media> tempManager;
+		list<Media>::iterator it;
+		for (it = mList.begin(); it != mList.end(); it++){
+
+			Media item = (*it);
+			if(sID.compare(item.getEntryID()) == 0){
+				return false;
+			}
+		}
+		return false;
+	}
+	else{
+		return true;	
+	}
+}
+
+/** @brief Verifies a string is in the correct price format for two decimal cents
+*
+*/
+bool validPrice(string iString){
+
+	int point = 0;
+	string price;
+
+	try{
+		while(iString[point] != '.'){
+			if(!isdigit(iString[point])){
+				return false;
+			}
+			price += iString[point];
+			point++;	
+		}
+
+		//Check Year
+		for(int i = 0; i < 2; i++){
+			price += iString[point];
+			point++;
+		}
+
+		if(point != iString.length()){
+			return false;	
+		}
+
+		return true;
+
+
+	}
+	catch (exception& e){
+		return false;	
+	}
+}
+
+/** @brief Verifies a string is in the correct Date format 'mm/dd/yyyy'
+*
+*/
 bool validDate(string iString){
 
 	int point = 0;
@@ -44,6 +124,11 @@ bool validDate(string iString){
 		if( (12 < stoi(month)) || (0 > stoi(month))){
 			return false;
 		}
+		
+		//Check for '/'
+		if(iString[point] != '/'){
+			return false;
+		}
 		point++;
 
 		//Check Day
@@ -52,6 +137,11 @@ bool validDate(string iString){
 		}
 
 		if( (31 < stoi(day)) || (0 > stoi(day))){
+			return false;
+		}
+	
+		//Check for '/'
+		if(iString[point] != '/'){
 			return false;
 		}
 		point++;
@@ -65,7 +155,7 @@ bool validDate(string iString){
 		}
 
 		//Check length
-		if(iString.length() != 6){
+		if(iString.length() != 10){
 			return false;
 		}
 		return true;
@@ -76,6 +166,9 @@ bool validDate(string iString){
 	}
 }
 
+/** @brief Verifies a string is in the correct time format 'hh:mm:ss'
+*
+*/
 bool validTime(string iString){
 
 	int point = 0;
@@ -93,6 +186,11 @@ bool validTime(string iString){
 		if( (12 < stoi(hours)) || (0 > stoi(hours))){
 			return false;
 		}
+	
+		//Check for ':'
+		if(iString[point] != ':'){
+			return false;
+		}
 		point++;	
 
 		//Check Minutes	
@@ -101,6 +199,11 @@ bool validTime(string iString){
 		}
 
 		if( (60 < stoi(minutes)) || (0 > stoi(minutes))){
+			return false;
+		}
+
+		//Check for ':'
+		if(iString[point] != ':'){
 			return false;
 		}
 		point++;
@@ -182,7 +285,7 @@ list<Media> editMediaEntry(string entryID, list<Media> mList, list<string> sList
 				cout << "\nEdit 'Media Date Available': ";
 				getline(cin, temp);
 				while(!validDate(temp)){
-					cout << "\nEnter valid Media Date Available (mm:dd:yyyy): ";
+					cout << "\nEnter valid Media Date Available (mm/dd/yyyy): ";
 					getline(cin, temp);	
 				}
 				item.setDateAvailable(temp);
@@ -259,7 +362,7 @@ void searchForMedia(string entryID, list<Media> mList){
 			if(entryID.compare(item.getEntryID()) == 0){
 				cout << string(100, '\n');
 				cout << "Found Media Entry:\n";
-				cout << item.asString() + "\n";
+				cout << item.printString() + "\n";
 				return;
 			}
 		}
@@ -281,6 +384,9 @@ list<Media> newMediaEntry(list<Media> mList, list<string> sList){
 
 	Media newItem = Media();
 	newItem.generateEntryID();
+	while(validID(newItem.getEntryID(), mList)){
+		newItem.generateEntryID();
+	}
 
 	cout << "\nProduct Type (movie, music, television, news or radio): ";
 	getline(cin, temp);
@@ -312,10 +418,10 @@ list<Media> newMediaEntry(list<Media> mList, list<string> sList){
 	tempFloat = (float) tempDub;
 	newItem.setRentalPrice(tempFloat);
 
-	cout << "\nMedia Date Available (mm:dd:yyyy): ";
+	cout << "\nMedia Date Available (mm/dd/yyyy): ";
 	getline(cin, temp);
 	while(!validDate(temp)){
-		cout << "\nEnter valid Media Date Available (mm:dd:yyyy): ";
+		cout << "\nEnter valid Media Date Available (mm/dd/yyyy): ";
 		getline(cin, temp);	
 	}
 	newItem.setDateAvailable(temp);
@@ -498,14 +604,14 @@ int main(int argc, char* argv[]){
                     			Media item = (*it);
 					rentalTotal += item.getRentalPrice();
 					mediaCount++;
-                    			cout << item.asString() + '\n';
+                    			cout << item.printString() + '\n';
                 		}
            		} 
             		else{
 				cout << "The List Is Empty!\n";
 		    	}
 			cout << "\nMedia Items in Streaming Service: " + to_string(mediaCount) + '\n';
-			cout << "Total Rental Cost: " + to_string(rentalTotal) + '\n';
+			cout << "Total Rental Cost: " + toDollar(rentalTotal) + '\n';
 			cout << '\n';
 		}
 
